@@ -1,14 +1,16 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bloc_trial/bloc/cubit/counter_cubit.dart';
 import 'package:bloc_trial/bloc/cubit/counter_state.dart';
+import 'package:bloc_trial/bloc/cubit/internet_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('CounterCubit', () {
     CounterCubit? counterCubit;
+    InternetCubit? internetCubit;
 
     setUp(() {
-      counterCubit = CounterCubit();
+      counterCubit = CounterCubit(internetCubit: internetCubit!);
     });
 
     tearDown(() {

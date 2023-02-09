@@ -1,16 +1,21 @@
 import 'package:bloc_trial/bloc/cubit/counter_cubit.dart';
 import 'package:bloc_trial/bloc/cubit/counter_cubit.dart';
 import 'package:bloc_trial/bloc/cubit/counter_state.dart';
+import 'package:bloc_trial/bloc/cubit/internet_cubit.dart';
 import 'package:bloc_trial/router/app_router.dart';
 import 'package:bloc_trial/screens/home_screeen.dart';
 import 'package:bloc_trial/screens/second_screen.dart';
 import 'package:bloc_trial/screens/third_screen.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyApp(
+    appRouter: AppRouter(),
+    connectivity: Connectivity(),
+  ));
 }
 
 // class MyApp extends StatefulWidget {
@@ -29,9 +34,10 @@ void main() {
 
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key, required this.appRouter, required this.connectivity});
   // final CounterCubit _counterCubit = CounterCubit();
-  final AppRouter _appRouter = AppRouter();
+  final AppRouter appRouter;
+  final Connectivity connectivity;
 
 //   @override
 //   void dispose(){
@@ -43,11 +49,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return
+    return MultiBlocProvider(
+        providers: [
+      BlocProvider<InternetCubit>(
+      create: (context) => InternetCubit(
+          connectivity: connectivity,),
+          // connectivityStreamSubscription),
+    ),
       BlocProvider(
-      create: (context) => CounterCubit(),
-      child:
-      MaterialApp(
+          create: (context) => CounterCubit(internetCubit: context.watch<InternetCubit>()),
+              // internetStreamSubscription),
+              // internetStreamSubscription)
+      ),
+        ],
+      child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           // This is the theme of your application.
@@ -61,7 +76,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        onGenerateRoute: _appRouter.onGenerateRoute,
+        onGenerateRoute: appRouter.onGenerateRoute,
         // routes: {
         //   '/': (context) => BlocProvider.value(
         //     value: _counterCubit,
@@ -85,7 +100,8 @@ class MyApp extends StatelessWidget {
         //     colors: Colors.cyan,
         //   ),
         // ),
-      ));
+        )
+      );
   }
 }
 

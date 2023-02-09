@@ -1,5 +1,8 @@
 import 'package:bloc_trial/bloc/cubit/counter_cubit.dart';
 import 'package:bloc_trial/bloc/cubit/counter_state.dart';
+import 'package:bloc_trial/bloc/cubit/internet_cubit.dart';
+import 'package:bloc_trial/bloc/cubit/internet_state.dart';
+import 'package:bloc_trial/constants/enums.dart';
 import 'package:bloc_trial/screens/second_screen.dart';
 import 'package:bloc_trial/screens/third_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
+  // int _counter = 0;
 
   // void _incrementCounter() {
   //   setState(() {
@@ -73,6 +76,24 @@ class _HomeScreenState extends State<HomeScreen> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            BlocBuilder<InternetCubit, InternetState>(
+                builder: (context, state){
+              if (state is InternetConnected &&
+              state.connectionType == ConnectionType.Wifi) {
+                // emitInternetConnected(ConnectionType.Wifi);
+                return const Text('Wifi');
+              }
+              else if (state is InternetConnected &&
+                  state.connectionType == ConnectionType.Mobile) {
+                // emitInternetConnected(ConnectionType.Mobile);
+                return const Text('Mobile');
+              }
+              else if (state is InternetDisconnected) {
+                // emitInternetDisconnected();
+                return const Text('Disconnected');
+              }
+              return const CircularProgressIndicator();
+            }),
             const Text(
               'You have pushed the button this many times:',
             ),
@@ -114,29 +135,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FloatingActionButton(
-                  heroTag: null,
-                  onPressed: () {
-                    BlocProvider.of<CounterCubit>(context).increment();
-                  },
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
-                ),
-                FloatingActionButton(
-                  heroTag: null,
-                  onPressed: () {
-                    BlocProvider.of<CounterCubit>(context).decrement();
-                  },
-                  tooltip: 'Decrement',
-                  child: const Icon(Icons.remove),
-                ),
-              ],
-            ),
-            SizedBox(
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   // crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: [
+            //     FloatingActionButton(
+            //       heroTag: null,
+            //       onPressed: () {
+            //         BlocProvider.of<CounterCubit>(context).increment();
+            //       },
+            //       tooltip: 'Increment',
+            //       child: const Icon(Icons.add),
+            //     ),
+            //     FloatingActionButton(
+            //       heroTag: null,
+            //       onPressed: () {
+            //         BlocProvider.of<CounterCubit>(context).decrement();
+            //       },
+            //       tooltip: 'Decrement',
+            //       child: const Icon(Icons.remove),
+            //     ),
+            //   ],
+            // ),
+            const SizedBox(
               height: 20,
             ),
             ElevatedButton(
@@ -145,8 +166,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     '/second'
                   );
                 },
-                child: Text('Second Screen')),
-            SizedBox(
+                child: const Text('Second Screen')),
+            const SizedBox(
               height: 20,
             ),
             ElevatedButton(
@@ -155,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     '/third'
                   );
                 },
-                child: Text('Third Screen')),
+                child: const Text('Third Screen')),
           ],
         )));
     // This trailing comma makes auto-formatting nicer for build methods.
