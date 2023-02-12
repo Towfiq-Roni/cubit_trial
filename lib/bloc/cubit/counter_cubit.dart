@@ -37,6 +37,7 @@ class CounterCubit extends Cubit<CounterState>{
 
   @override
   Future<void> close(){
+    // internetCubit.close();
     internetStreamSubscription!.cancel();
     return super.close();
   }
