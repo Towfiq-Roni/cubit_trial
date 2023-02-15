@@ -9,25 +9,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CounterCubit extends Cubit<CounterState>{
 
-  final InternetCubit internetCubit;
-  StreamSubscription<InternetState>? internetStreamSubscription;
+  // final InternetCubit internetCubit;
+  // StreamSubscription<InternetState>? internetStreamSubscription;
 
-  CounterCubit({required this.internetCubit}):
-        super(const CounterState(counterValue: 0)){
-    monitorInternetCubit();
-  }
-    StreamSubscription<InternetState> monitorInternetCubit() {
-    return internetStreamSubscription = internetCubit.stream.listen((internetState){
-      if(internetState is InternetConnected &&
-          internetState.connectionType == ConnectionType.Wifi){
-        increment();
-      }
-      else if(internetState is InternetConnected &&
-          internetState.connectionType == ConnectionType.Mobile){
-        decrement();
-      }
-    });
-  }
+  CounterCubit():
+        super(const CounterState(counterValue: 0));
+  // {
+    // monitorInternetCubit();
+  // }
+  //   StreamSubscription<InternetState> monitorInternetCubit() {
+  //   return internetStreamSubscription = internetCubit.stream.listen((internetState){
+  //     if(internetState is InternetConnected &&
+  //         internetState.connectionType == ConnectionType.Wifi){
+  //       increment();
+  //     }
+  //     else if(internetState is InternetConnected &&
+  //         internetState.connectionType == ConnectionType.Mobile){
+  //       decrement();
+  //     }
+  //   });
+  // }
 
   void increment() => emit(CounterState(counterValue: (state.counterValue + 1),
       wasIncremented: true));
@@ -35,10 +36,10 @@ class CounterCubit extends Cubit<CounterState>{
   void decrement() => emit(CounterState(counterValue: (state.counterValue - 1),
       wasIncremented: false));
 
-  @override
-  Future<void> close(){
-    // internetCubit.close();
-    internetStreamSubscription!.cancel();
-    return super.close();
-  }
+  // @override
+  // Future<void> close(){
+  //   // internetCubit.close();
+  //   internetStreamSubscription!.cancel();
+  //   return super.close();
+  // }
 }

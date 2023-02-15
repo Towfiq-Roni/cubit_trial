@@ -10,7 +10,9 @@ void main() {
     InternetCubit? internetCubit;
 
     setUp(() {
-      counterCubit = CounterCubit(internetCubit: internetCubit!);
+      counterCubit = CounterCubit(
+          // internetCubit: internetCubit!
+      );
     });
 
     tearDown(() {

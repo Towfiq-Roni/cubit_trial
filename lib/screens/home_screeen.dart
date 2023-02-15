@@ -50,7 +50,26 @@ class _HomeScreenState extends State<HomeScreen> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
+    return BlocListener<InternetCubit, InternetState>(listener: (context, state){
+      if (state is InternetConnected &&
+          state.connectionType == ConnectionType.Wifi) {
+        // emitInternetConnected(ConnectionType.Wifi);
+        // return const Text('Wifi');
+        context.read<CounterCubit>().increment();
+      }
+      else if (state is InternetConnected &&
+          state.connectionType == ConnectionType.Mobile) {
+        // emitInternetConnected(ConnectionType.Mobile);
+        // return const Text('Mobile');
+        context.read<CounterCubit>().decrement();
+      }
+      else if (state is InternetDisconnected) {
+        // emitInternetDisconnected();
+        // return const Text('Disconnected');
+        context.read<CounterCubit>().decrement() ;
+      }
+    },
+    child: Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
@@ -178,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: const Text('Third Screen')),
           ],
-        )));
+        ))));
     // This trailing comma makes auto-formatting nicer for build methods.
   }
 }

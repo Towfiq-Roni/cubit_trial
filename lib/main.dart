@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           // connectivityStreamSubscription),
     ),
       BlocProvider(
-          create: (context) => CounterCubit(internetCubit: context.read<InternetCubit>()),
+          create: (context) => CounterCubit(),
               // internetStreamSubscription),
               // internetStreamSubscription)
       ),
